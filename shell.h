@@ -10,10 +10,11 @@
 #include <errno.h>
 
 int append_path(char **av);
-void execute_command(char *argv, char **av, char *envp[]);
+void remove_comment(char *line, size_t nchars);
 void parseInput(char *lineptr, char ***av, size_t *nchars, int *num_tokens);
 void execmd(char **av, char **envp);
 void execute_command(char *argv, char **av, char *envp[]);
+void freeav(char **av);
 
 char *_getline();
 char *pipe_getline();

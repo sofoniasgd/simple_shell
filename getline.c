@@ -29,7 +29,7 @@ char *pipe_getline()
 	if (ret == NULL)
 		return (NULL);
 
-	len = strlen(buffer);
+	len = _strlen(buffer);
 	while (len > 0 && buffer[len - 1] == '\n')
 	{
 		buffer[len - 1] = '\0';

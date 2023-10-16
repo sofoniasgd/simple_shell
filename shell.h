@@ -11,7 +11,7 @@
 
 int append_path(char **av);
 void execute_command(char *argv, char **av, char *envp[]);
-void parseInput(char *lineptr, char ***av, ssize_t *nchars, int *num_tokens);
+void parseInput(char *lineptr, char ***av, size_t *nchars, int *num_tokens);
 void execmd(char **av, char **envp);
 void execute_command(char *argv, char **av, char *envp[]);
 
@@ -25,6 +25,7 @@ int isdelim(char stringc, const char *delim);
 void remdelimiter(char *strc, const char *delim);
 
 char *_strcpy(char *destination, const char *source);
+char *_strncpy(char *dest, char *src, int n);
 char *_strchr(const char *str, int c);
 int _strcmp(const char *str1, const char *str2);
 char *_strcat(char *dest, const char *src);

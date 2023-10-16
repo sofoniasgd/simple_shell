@@ -70,7 +70,7 @@ char *_strtok(char *str, const char *delim)
 		return (NULL);
 	/*get strc length, find delimiter (handle dulpicate delimiters)*/
 	/*remdelimiter(strc, delim);*/
-	len = strlen(strc);
+	len = _strlen(strc);
 	while (i <= len)
 	{
 		if (isdelim(*(strc + i), delim) == 1)

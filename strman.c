@@ -7,16 +7,18 @@
  */
 char *_strcpy(char *destination, const char *source)
 {
-	char *start = destination;
+	int i = 0;
 
-	while (*source != '\0')
+	if (source == NULL)
+		return (NULL);
+	while (*(source + i) != '\0')
 	{
-		*destination = *source;
-		destination++;
-		source++;
+		*(destination + i) = *(source + i);
+		i++;
 	}
-	*destination = '\0';
-	return (start);
+	*(destination + i) = '\0';
+
+	return (destination);
 }
 /**
  * _strcmp - Compare two strings lexicographically.
@@ -52,7 +54,7 @@ size_t _strlen(const char *str)
 {
 	size_t length = 0;
 
-	while (str[length] != '\0')
+	while (*(str + length) != '\0')
 	{
 		length++;
 	}

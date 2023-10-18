@@ -52,11 +52,12 @@ int _strcmp(const char *str1, const char *str2)
  */
 size_t _strlen(const char *str)
 {
+	int i;
 	size_t length = 0;
 
-	while (*(str + length) != '\0')
+	for(i = 0; *(str + i) != '\0'; i++)
 	{
-		length += 1;
+		length++;
 	}
 	return (length);
 }

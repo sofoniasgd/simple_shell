@@ -29,7 +29,7 @@ char *pipe_getline()
 	if (ret == NULL)
 		return (NULL);
 
-	len = _strlen(buffer);
+	len = strlen(buffer);
 	while (len > 0 && buffer[len - 1] == '\n')
 	{
 		buffer[len - 1] = '\0';
@@ -66,35 +66,30 @@ char *pipe_getline()
  */
 char *_getline()
 {
-	ssize_t len;
-	/* use static buffer with max size 1024 and flsuh it */
-	static char buff[1024];
+    ssize_t len;
+    static char buff[1024];
 
-	if (!isatty(STDIN_FILENO))
-	{
-		return (pipe_getline());
-	}
-	flushbuffer(buff);
-	/* call read and handle errors */
-	len = read(STDIN_FILENO, buff, sizeof(buff));
-	if (len == -1)
-	{
-		/* read failure, done writing data */
-		write(STDOUT_FILENO, "\n", 1);
-		exit(EXIT_FAILURE);
-	}
-	/* id len == 0, EOF is reached with/out input */
-	else if (len == 0)
-	{
-		/* EOF with notext exit program */
-		if (buff[0] == '\0')
-		{
-			if (isatty(STDIN_FILENO))
-				write(STDOUT_FILENO, "\n", 1);
-			exit(EXIT_SUCCESS);
-		}
-		return (buff);
-	}
-	/* normal input */
-	return (buff);
+    if (!isatty(STDIN_FILENO))
+    {
+        return (pipe_getline());
+    }
+
+    len = read(STDIN_FILENO, buff, sizeof(buff));
+    if (len == -1)
+    {
+        write(STDOUT_FILENO, "\n", 1);
+        exit(EXIT_FAILURE);
+    }
+    else if (len == 0)
+    {
+        if (buff[0] == '\0')
+        {
+            if (isatty(STDIN_FILENO))
+                write(STDOUT_FILENO, "\n", 1);
+        }
+        return NULL; 
+    }
+
+    return (buff);
 }
+

@@ -25,7 +25,7 @@ char *_strdup(const char *str);
 char *_strchr(const char *str, int c);
 int _atoi(const char *str);
 void _exitstatus(char **argv, char **av);
-void remove_comment(char **av, int *num_tokens);
+void remove_comment(char *line, size_t nchars, ssize_t *nchars_read);
 void flushbuffer(char *buff);
 char *pipe_getline();
 void remdelimiter(char *strc, const char *delim);

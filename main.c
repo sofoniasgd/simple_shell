@@ -125,8 +125,8 @@ int main(int argc, char *argv[], char *envp[])
 		else if (strcmp(lineptr, "*") == 0)
 			continue;
 		nchars_read = _strlen(lineptr);
+		remove_comment(lineptr, (nchars_read + 1), &nchars_read);
 		parseInput(lineptr, &av, &nchars_read, &num_tokens);
-		/*remove_comment(av, &num_tokens);*/
 		if (_strcmp(av[0], "exit") == 0)
 		{
 			_exitstatus(argv, av);

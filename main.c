@@ -1,5 +1,104 @@
 #include "shell.h"
 /**
+ * append_path - looks for path and appends to command(TASK 3)
+ * @av: pointer array of command and arguments
+ * Return: always 0
+ */
+int append_path(char **av)
+{
+	char *command = NULL, *path = getenv("PATH"), *token, *path_copy, *full_path;
+	/* check if command already has full path or not */
+	command = av[0];
+	if (_strchr(command, '/') == NULL)
+	{
+		/* get PATH value, extract directories(strtok) */
+		path_copy = _strdup(path);
+		token = _strtok(path_copy, ":");
+		while (token != NULL)
+		{
+			/* for each directory, generate full path */
+			/* and check if it exists (and can be accessed) */
+			full_path = malloc(_strlen(token) + _strlen(command) + 2);
+			if (full_path != NULL)
+			{
+				_strcpy(full_path, token);
+				_strcat(full_path, "/");
+				_strcat(full_path, command);
+				if (access(full_path, X_OK) == 0)
+				{
+					/* file can be accessed, save full path to av[0]*/
+					/* free av[0], reallocate to size of full_path and copy */
+					free(av[0]);
+					av[0] = malloc(sizeof(char) * _strlen(full_path));
+					_strcpy(av[0], full_path);
+					free(full_path);
+					free(path_copy);
+					return (0);
+				}
+				free(full_path);
+			}
+			token = _strtok(NULL, ":");
+		}
+		free(path_copy);
+	}
+	else
+	{
+		return (0);
+	}
+return (0);
+}
+
+/**
+ * execute_command - Execute a command with its arguments.
+ * @av: An array of strings containing the command and its arguments.
+ * @argv: a string of first argument of main function
+ * @envp: An array of strings containing environment variables.
+ */
+void execute_command(char *argv, char **av, char *envp[])
+{
+	char errmessage[256];
+	pid_t pid;
+	int status, exitstat;
+
+	errmessage[0] = '\0';
+	/* check if av exists or command exists(parseint worked)*/
+	if (!av || !av[0])
+		exit(2);
+	/* handle path before fork==> call append path */
+	append_path(av);
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		execmd(av, envp);
+		strcat(errmessage, argv);
+		strcat(errmessage, ": 1: ");
+		strcat(errmessage, av[0]);
+		strcat(errmessage, ": not found\n");
+		write(STDERR_FILENO, errmessage, strlen(errmessage));
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		if (wait(&status) == -1)
+		{
+			perror("wait");
+			exit(EXIT_FAILURE);
+		}
+		if (WIFEXITED(status))
+		{
+			exitstat = WEXITSTATUS(status);
+			if (exitstat != 0)
+				exit(exitstat);
+		}
+	}
+}
+
+/**
  * main - Entry point for the shell program.
  * @argc: The number of command-line arguments.
  * @argv: An array of strings containing the command-line arguments.
@@ -9,13 +108,11 @@
 
 int main(int argc, char *argv[], char *envp[])
 {
-	size_t nchars_read;
+	ssize_t nchars_read;
 	char *lineptr = NULL, **av = NULL;
-	int num_tokens = 0;
+	int num_tokens = 0, i = 0;
 
 	(void)argc;
-	(void)argv;
-	(void)envp;
 	while (1)
 	{
 		if (isatty(STDIN_FILENO))
@@ -28,61 +125,21 @@ int main(int argc, char *argv[], char *envp[])
 		else if (strcmp(lineptr, "*") == 0)
 			continue;
 		nchars_read = _strlen(lineptr);
-		/* remove comments */
-		remove_comment(lineptr, (nchars_read + 1), &nchars_read);
-		if (*lineptr == 0)
-			continue;
-		/* tokenize command line */
-		nchars_read = _strlen(lineptr);
 		parseInput(lineptr, &av, &nchars_read, &num_tokens);
-		/* check for builtin functions => exit, cd,  env */
-		/* else append path and execute commend */
-		if (builtin_functions(av, argv, envp) == 1)
-			continue;
-		else
-			execute_command(argv[0], av, envp);
-		/* free allocated memory */
-		freeav(av);
+		/*remove_comment(av, &num_tokens);*/
+		if (_strcmp(av[0], "exit") == 0)
+		{
+			_exitstatus(argv, av);
+		}
+		else if (num_tokens == 1 && _strcmp(av[0], "env") == 0)
+			print_environment(envp);
+		execute_command(argv[0], av, envp);
+		for (i = 0; i < num_tokens; i++)
+		{
+			free(av[i]);
+		}
+		free(av);
 	}
+	free(lineptr);
 	return (0);
-}
-/**
- * builtin_functions - checks for builtin functions
- * @av: tekenized command array
- * @argv: argument array to main
- * @envp: enviroment variable pointer
- * Return: status flag (0 for not found, 1 for found and executed)
- */
-int builtin_functions(char **av, char *argv[], char *envp[])
-{
-	int flag = 0;
-	/* check for each case and call respective function */
-	if (_strcmp(av[0], "exit") == 0)
-	{
-		flag = 1;
-		_exitstatus(argv, av);
-	}
-	else if (_strcmp(av[0], "env") == 0)
-	{
-		flag = 1;
-		print_environment(envp);
-	}
-	/* return status flag(1 if function found, 0 otherwise)*/
-	return (flag);
-}
-/**
- * freeav - frees a pointer array's elements
- * @av: pointer array
- * Return: none
- */
-void freeav(char **av)
-{
-	int i = 0;
-
-	while (av[i] != NULL)
-	{
-		free(av[i]);
-		i++;
-	}
-	free(av);
 }

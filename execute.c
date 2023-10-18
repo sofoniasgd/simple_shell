@@ -13,11 +13,13 @@ void execute_command(char *argv, char **av, char *envp[])
 	int status, exitstat;
 
 	errmessage[0] = '\0';
+	printf("in execute");
 	/* check if av exists or command exists(parseint worked)*/
 	if (!av || !av[0])
 		exit(2);
 	/* handle path before fork==> call append path */
-	append_path(av);
+	
+	/*append_path(av);*/
 	pid = fork();
 	if (pid == -1)
 	{

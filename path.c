@@ -15,6 +15,7 @@ int append_path(char **av)
 		/* get PATH value, extract directories(strtok) */
 		path_copy = _strdup(path);
 		token = _strtok(path_copy, ":");
+		printf("path=><%s>\npathcopy=><%s>\n", path, path_copy);
 		while (token != NULL)
 		{
 			/* for each directory, generate full path */
@@ -30,7 +31,7 @@ int append_path(char **av)
 					/* file can be accessed, save full path to av[0]*/
 					/* free av[0], reallocate to size of full_path and copy */
 					free(av[0]);
-					av[0] = malloc(sizeof(char) * _strlen(full_path));
+					av[0] = malloc(sizeof(char) * (_strlen(full_path) + 1));
 					_strcpy(av[0], full_path);
 					free(full_path);
 					free(path_copy);

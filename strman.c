@@ -56,9 +56,9 @@ size_t _strlen(const char *str)
 
 	while (*(str + length) != '\0')
 	{
-		length++;
+		length += 1;
 	}
-	return (length - 1);
+	return (length);
 }
 /**
  * _strcat - Concatenate two strings.

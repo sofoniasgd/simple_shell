@@ -50,9 +50,14 @@ int _strcmp(const char *str1, const char *str2)
  */
 size_t _strlen(const char *str)
 {
+	int i;
 	size_t length = 0;
 
+<<<<<<< HEAD:strman.c
 	while (str[length] != '\0')
+=======
+	for(i = 0; *(str + i) != '\0'; i++)
+>>>>>>> c313f0514628d3d429fba15d7db6dcbd52cc585d:shellnew/strman.c
 	{
 		length++;
 	}

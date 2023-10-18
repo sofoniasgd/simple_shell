@@ -66,30 +66,30 @@ char *pipe_getline()
  */
 char *_getline()
 {
-    ssize_t len;
-    static char buff[1024];
+	ssize_t len;
+	static char buff[1024];
 
-    if (!isatty(STDIN_FILENO))
-    {
-        return (pipe_getline());
-    }
+	if (!isatty(STDIN_FILENO))
+	{
+		return (pipe_getline());
+	}
 
-    len = read(STDIN_FILENO, buff, sizeof(buff));
-    if (len == -1)
-    {
-        write(STDOUT_FILENO, "\n", 1);
-        exit(EXIT_FAILURE);
-    }
-    else if (len == 0)
-    {
-        if (buff[0] == '\0')
-        {
-            if (isatty(STDIN_FILENO))
-                write(STDOUT_FILENO, "\n", 1);
-        }
-        return NULL; 
-    }
+	len = read(STDIN_FILENO, buff, sizeof(buff));
+	if (len == -1)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		exit(EXIT_FAILURE);
+	}
+	else if (len == 0)
+	{
+	if (buff[0] == '\0')
+	{
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "\n", 1);
+	}
+		return (NULL);
+	}
 
-    return (buff);
+	return (buff);
 }
 

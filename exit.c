@@ -6,7 +6,7 @@
  * @argv: argument vector of main
  * Return: none
  */
-void _exitstatus(__attribute__((unused))char **argv, char **av)
+void _exitstatus(char **argv, char **av)
 {
 	char errmessage[256];
 	int status_code;
@@ -14,7 +14,7 @@ void _exitstatus(__attribute__((unused))char **argv, char **av)
 	errmessage[0] = '\0';
 	if (av[1])
 	{
-		status_code = atoi(av[1]);
+		status_code = _atoi(av[1]);
 		/* if exit code is invalid */
 		if (status_code <= 0)
 		{

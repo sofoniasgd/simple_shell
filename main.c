@@ -48,16 +48,17 @@ int main(int argc, char *argv[], char *envp[])
 }
 /**
  * builtin_functions - checks for builtin functions
- * @av:
+ * @av: tekenized command array
+ * @argv: argument array to main
  * @envp: enviroment variable pointer
  * Return: status flag (0 for not found, 1 for found and executed)
  */
-int builtin_functions(char **av, char *argv[], char* envp[])
+int builtin_functions(char **av, char *argv[], char *envp[])
 {
 	int flag = 0;
 	/* check for each case and call respective function */
 	if (_strcmp(av[0], "exit") == 0)
-	{	
+	{
 		flag = 1;
 		_exitstatus(argv, av);
 	}

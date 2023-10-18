@@ -15,7 +15,6 @@ int append_path(char **av)
 		/* get PATH value, extract directories(strtok) */
 		path_copy = _strdup(path);
 		token = _strtok(path_copy, ":");
-		printf("path=><%s>\npathcopy=><%s>\n", path, path_copy);
 		while (token != NULL)
 		{
 			/* for each directory, generate full path */

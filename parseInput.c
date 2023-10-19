@@ -27,7 +27,7 @@ void parseInput(char *lineptr, char ***av, ssize_t *nchars, int *num_tokens)
 		token = _strtok(NULL, delim);
 	}
 	/*(*num_tokens)++;*/
-	*av = malloc(sizeof(char *) * (*num_tokens));
+	*av = malloc(sizeof(char *) * ((*num_tokens) + 1));
 	if (*av == NULL)
 	{
 		perror("malloc");

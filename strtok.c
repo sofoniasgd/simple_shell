@@ -73,7 +73,7 @@ char *_strtok(char *str, const char *delim)
 	len = strlen(strc);
 	while (i <= len)
 	{
-		if (isdelim(*(strc + i), delim) == 1)
+		if (isdelim(*(strc + i), delim) == 1 || i == len)
 			break;
 		i++;
 	}

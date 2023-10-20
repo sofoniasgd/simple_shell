@@ -10,7 +10,7 @@ void print_environment(char *envp[])
 
 	while (envp[i] != NULL)
 	{
-		len = _strlen(envp[i]);
+		len = _strlen(envp[i]) + 1;
 		write(STDOUT_FILENO, envp[i], len);
 		write(STDOUT_FILENO, "\n", 1);
 		i++;

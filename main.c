@@ -29,7 +29,7 @@ int append_path(char **av)
 					/* file can be accessed, save full path to av[0]*/
 					/* free av[0], reallocate to size of full_path and copy */
 					free(av[0]);
-					av[0] = malloc(sizeof(char) * _strlen(full_path));
+					av[0] = malloc(sizeof(char) * (_strlen(full_path) + 1));
 					_strcpy(av[0], full_path);
 					free(full_path);
 					free(path_copy);
@@ -80,7 +80,7 @@ void execute_command(char *argv, char **av, char *envp[])
 		strcat(errmessage, av[0]);
 		strcat(errmessage, ": not found\n");
 		write(STDERR_FILENO, errmessage, strlen(errmessage));
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	else
 	{

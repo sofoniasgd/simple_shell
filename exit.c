@@ -32,13 +32,13 @@ void _exitstatus(char **argv, char **av)
 		/* free memory and exit with code */
 		free(av[0]);
 		free(av[1]);
-		free(av);
-		exit(status_code);
 	}
 	else
 	{
 		free(av[0]);
-		free(av);
-		exit(0);
+		status_code = 0;
+
 	}
+	free(av);
+	exit(status_code);
 }

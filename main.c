@@ -58,7 +58,7 @@ void execute_command(char *argv, char **av, char *envp[])
 {
 	char errmessage[256];
 	pid_t pid;
-	int status, exitstat;
+	int status, exitstat, i = 0;
 
 	errmessage[0] = '\0';
 	/* check if av exists or command exists(parseint worked)*/
@@ -80,6 +80,9 @@ void execute_command(char *argv, char **av, char *envp[])
 		strcat(errmessage, av[0]);
 		strcat(errmessage, ": not found\n");
 		write(STDERR_FILENO, errmessage, strlen(errmessage));
+		while (av[i] != NULL)
+			free(av[i]);
+		free(av);
 		exit(127);
 	}
 	else
@@ -128,12 +131,11 @@ int main(int argc, char *argv[], char *envp[])
 		remove_comment(lineptr, (nchars_read + 1), &nchars_read);
 		parseInput(lineptr, &av, &nchars_read, &num_tokens);
 		if (_strcmp(av[0], "exit") == 0)
-		{
 			_exitstatus(argv, av);
-		}
 		else if (num_tokens == 1 && _strcmp(av[0], "env") == 0)
 			print_environment(envp);
-		execute_command(argv[0], av, envp);
+		else
+			execute_command(argv[0], av, envp);
 		for (i = 0; i < num_tokens; i++)
 		{
 			free(av[i]);
